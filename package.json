@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/BrianKendalBucek/tinyapp/issues"
   },
-  "homepage": "https://github.com/BrianKendalBucek/tinyapp#readme"
+  "homepage": "https://github.com/BrianKendalBucek/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }

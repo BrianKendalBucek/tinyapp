@@ -9,12 +9,24 @@ app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
 
+/////////////////////////////////////////////////////////////////////////////
+////TO ENCODE
+/////////////////////////////////////////////////////////////////////////////
+
 app.use(express.urlencoded({ extended: true }));
+
+/////////////////////////////////////////////////////////////////////////////
+////DATABASE
+/////////////////////////////////////////////////////////////////////////////
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+/////////////////////////////////////////////////////////////////////////////
+////SHORT STRING FUNCTION
+/////////////////////////////////////////////////////////////////////////////
 
 function generateRandomString() {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -27,10 +39,9 @@ function generateRandomString() {
 
   return result;
 }
-
-generateRandomString();
-
+/////////////////////////////////////////////////////////////////////////////
 ////GET REQUESTS
+/////////////////////////////////////////////////////////////////////////////
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -50,13 +61,27 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
+  const templateVars = 
+    {
+      id: req.params.id, 
+      longURL: urlDatabase[req.params.id] 
+    };
+
   res.render("urls_show", templateVars);
 });
 
+app.get("/u/:id", (req, res) => {
+  const shortURL = req.params.id;
+  const longURL = urlDatabase[shortURL];
+  res.redirect(`https://${longURL}` );
+});
+
+/////////////////////////////////////////////////////////////////////////////
 ////POST REQUESTS
+/////////////////////////////////////////////////////////////////////////////
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send("Ok");
+  let shortUrl = generateRandomString();
+  urlDatabase[shortUrl] = req.body.longURL;
+  res.redirect(`/urls/${shortUrl}`);
 });

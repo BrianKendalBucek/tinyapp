@@ -50,7 +50,6 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  // console.log(req.cookies.username);
   const templateVars = {
     username: req.cookies["username"], 
     urls: urlDatabase 

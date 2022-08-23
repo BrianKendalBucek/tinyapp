@@ -72,6 +72,19 @@ function generateRandomUser() {
 }
 
 /////////////////////////////////////////////////////////////////////////////
+////Duplicate Email Checker
+/////////////////////////////////////////////////////////////////////////////
+
+const emailDuplicate = (emailTest) => {
+  for (let i in users) {
+    if (users[i]['email'] === emailTest) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/////////////////////////////////////////////////////////////////////////////
 ////GET REQUESTS
 /////////////////////////////////////////////////////////////////////////////
 
@@ -155,7 +168,9 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body);
+  if(req.body.username.length === 0) {
+    res.sendStatus(400);
+  }
   res.cookie("username", req.body.username);
   res.redirect("/urls");
 });
@@ -166,15 +181,20 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
+  const emailChecker = emailDuplicate(req.body.email);
+  if (emailChecker || req.body.email.length === 0 || req.body.password.length === 0) {
+    res.sendStatus(400);
+  }
   const templateVars = {
   };
+  
   let userID = generateRandomUser();
   users[userID] = {
     id: userID,
     email: req.body.email,
     password: req.body.password,
   };
-  console.log(users, "********");
+
   res.cookie("user_id", userID);
   // res.render("urls_register", templateVars);
   res.redirect("/urls");

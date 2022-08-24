@@ -9,7 +9,7 @@
       aria-controls="navbarNavAltMarkup"
       aria-expanded="false"
       aria-label="Toggle navigation"
-    >
+    >  
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
@@ -17,21 +17,15 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
         <% if (user) { %>
-          <h1>Logged in as: <%= user.email %></h1>
+          <h3>Logged in as: <%= user.email %></h3>
           <form action="/logout" method="POST">
-            <button>Log Out</button>
+            <button type="submit" value="submit">Log Out</button>
           </form>
-       <% } else { %>
-          <h1>
-            <form action="/login" method="POST">
-              <input 
-                type="text"
-                name="username"
-                />
-              <button>Login</button>
-            </form>
-          </h1>
-        <% } %>
+          <% } %>
+        <% if (!user) { %>
+          <a class="nav-item nav-link" href="/register">Register</a>
+          <a class="nav-item nav-link" href="/login">Login</a>  
+          <% } %>
       </div>
     </div>
   </nav>

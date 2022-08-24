@@ -116,6 +116,30 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+app.get("/register", (req, res) => {
+  let userID = req.cookies["user_id"];
+  const user = users[userID];
+  const templateVars = 
+  {
+    username: req.cookies["username"],
+    user
+  };
+
+  res.render("urls_register", templateVars);
+});
+
+app.get("/login", (req, res) => {
+  let userID = req.cookies["user_id"];
+  const user = users[userID];
+  const templateVars = 
+  {
+    username: req.cookies["username"],
+    user
+  };
+
+  res.render('urls_login', templateVars);
+});
+
 app.get("/urls/:id", (req, res) => {
   let userID = req.cookies["user_id"];
   const user = users[userID];
@@ -136,17 +160,6 @@ app.get("/u/:id", (req, res) => {
   res.redirect(`https://${longURL}` );
 });
 
-app.get("/register", (req, res) => {
-  let userID = req.cookies["user_id"];
-  const user = users[userID];
-  const templateVars = 
-  {
-    username: req.cookies["username"],
-    user
-  };
-
-  res.render("urls_register", templateVars);
-});
 /////////////////////////////////////////////////////////////////////////////
 ////POST REQUESTS
 /////////////////////////////////////////////////////////////////////////////

@@ -110,7 +110,7 @@ app.get("/urls/new", (req, res) => {
   let userID = req.cookies["user_id"];
   const user = users[userID];
   const templateVars = {
-    username: req.cookies["username"],
+    user_id: req.cookies["user_id"],
     user
   }
   res.render("urls_new", templateVars);
@@ -121,7 +121,7 @@ app.get("/register", (req, res) => {
   const user = users[userID];
   const templateVars = 
   {
-    username: req.cookies["username"],
+    user_id: req.cookies["user_id"],
     user
   };
 
@@ -133,7 +133,7 @@ app.get("/login", (req, res) => {
   const user = users[userID];
   const templateVars = 
   {
-    username: req.cookies["username"],
+    user_id: req.cookies["user_id"],
     user
   };
 
@@ -145,7 +145,7 @@ app.get("/urls/:id", (req, res) => {
   const user = users[userID];
   const templateVars = 
     {
-      username: req.cookies["username"],
+      user_id: req.cookies["user_id"],
       id: req.params.id, 
       longURL: urlDatabase[req.params.id],
       user 
@@ -181,26 +181,30 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  if(req.body.username.length === 0) {
-    res.sendStatus(400);
+  if(req.body.email.length === 0) {
+    res.sendStatus(403);
   }
-  res.cookie("username", req.body.username);
+  for (let i in users) {
+    console.log(req.body.email);
+    if (users[i]["email"] === req.body.email && users[i]["password"] === req.body.password) {
+      res.cookie("user_id", users[i].id);
+      res.redirect('/urls');
+    }
+  }
+  res.sendStatus(403);
   res.redirect("/urls");
 });
 
 app.post("/logout", (req, res) => {
-  res.clearCookie("username", req.body.username);
+  res.clearCookie("user_id", req.body.user_id);
   res.redirect("/urls");
 });
 
 app.post("/register", (req, res) => {
   const emailChecker = emailDuplicate(req.body.email);
   if (emailChecker || req.body.email.length === 0 || req.body.password.length === 0) {
-    res.sendStatus(400);
+    res.sendStatus(403);
   }
-  const templateVars = {
-  };
-  
   let userID = generateRandomUser();
   users[userID] = {
     id: userID,

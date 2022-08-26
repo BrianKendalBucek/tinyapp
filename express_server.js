@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cookieSession({ name: "session", keys: ["key1"], maxAge: 24 * 60 * 60 * 1000 }));
 
-//-----------------------DATABASE
+//===============================DATABASE
 const urlDatabase = {};
 const users = {};
 

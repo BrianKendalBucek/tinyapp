@@ -136,8 +136,6 @@ app.post("/urls/:id", (req, res) => {
   let user = users[userID];
 
   if (!urlExists(shortURL, urlDatabase)) {
-    // console.log("---------", shortURL);
-    // console.log("**********", urlDatabase);
     return res.status(400).send("The url does not exist");
   }
   if (!user) {
@@ -179,7 +177,6 @@ app.post("/login", (req, res) => {
   }
   for (let i in users) {
     const emailMatches = getUserByEmail(email, users);
-    // const emailMatches = users[i]["email"] === email;
     const passwordMatches = bcrypt.compareSync(password, users[i]["password"]);
     if (emailMatches && passwordMatches) {
       req.session.user_id = users[i].id;
@@ -195,11 +192,13 @@ app.post("/logout", (req, res) => {
 });
 //-----------------------
 app.post("/register", (req, res) => {
-  const emailChecker = emailDuplicate(req.body.email, users);
+  const email = req.body.email;
+  const password = req.body.password;
+  const emailChecker = emailDuplicate(users, email);
   if (
     emailChecker ||
-    req.body.email.length === 0 ||
-    req.body.password.length === 0
+    email.length === 0 ||
+    password.length === 0
   ) {
     res.sendStatus(400);
   }

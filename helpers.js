@@ -1,9 +1,10 @@
 //If user in database via emailsearch, gets userID
-const getUserByEmail = (users, email) => {
-
-  if (users[userID]["email"] === email) {
-    return true;
-  }
+const getUserByEmail = (email, users) => {
+  for (let userID in users) {
+    if (users[userID]["email"] === email) {
+      return users[userID];
+    }
+  };
   return false;
 };
 //-----------------------
@@ -20,18 +21,10 @@ const generateRandomString = () => {
   return result;
 };
 //-----------------------
-//Checks if email input is already in database
-const emailDuplicate = (users, email) => {
-  for (let i in users) {
-    if (users[i]["email"] === email) {
-      return true;
-    }
-  }
-  return false;
-};
-//-----------------------
+//Giving only the user/creator access to his created urls
+
 //Compares user id from cookie to user id in user database
-//If true, the url from each matching id obj is passed into the userURLs {}
+//If true, the url from each matching ids obj is passed into the userURLs {}
 const urlsOfUser = (userID, urlDatabase) => {
   let userURLs = {};
   for (let url in urlDatabase) {
@@ -67,7 +60,6 @@ const urlExists = (shortURL, urlDatabase) => {
 module.exports = {
   getUserByEmail,
   generateRandomString,
-  emailDuplicate,
   urlBelongsToUser,
   urlsOfUser,
   urlExists

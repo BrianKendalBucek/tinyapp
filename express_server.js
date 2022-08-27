@@ -2,7 +2,7 @@ const express = require("express");
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcryptjs");
 const morgan = require("morgan");
-const { getUserByEmail, generateRandomString, emailDuplicate, urlBelongsToUser, urlsOfUser, urlExists } = require("./helpers");
+const { getUserByEmail, generateRandomString, urlBelongsToUser, urlsOfUser, urlExists } = require("./helpers");
 
 const app = express();
 const PORT = 8080;
@@ -194,13 +194,13 @@ app.post("/logout", (req, res) => {
 app.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  const emailChecker = emailDuplicate(users, email);
+  const emailChecker = getUserByEmail(users, email);
   if (
     emailChecker ||
     email.length === 0 ||
     password.length === 0
   ) {
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
   let userID = generateRandomString();
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);

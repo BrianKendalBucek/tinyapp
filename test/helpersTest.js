@@ -1,9 +1,7 @@
 const { assert } = require('chai');
 
-const { getUserByEmail, generateRandomString, emailDuplicate, urlBelongsToUser, urlsOfUser, urlExists } = require("../helpers");
-
-const { getUserByEmail } = require('../helpers.js');
-
+const { getUserByEmail, generateRandomString, urlBelongsToUser, urlsOfUser, urlExists } = require("../helpers");
+//-----------------------
 const testUsers = {
   "userRandomID": {
     id: "userRandomID", 
@@ -17,19 +15,32 @@ const testUsers = {
   }
 };
 
+const testUrlDatabase = {
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "aJ48lW",
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "aJ48lW",
+  },
+};
+//-----------------------
 describe('getUserByEmail', function() {
-  it('should return a user with valid email', function() {
+  it('Should return a user with valid email', function() {
     const user = getUserByEmail("user@example.com", testUsers)
-    const expectedUserID = "userRandomID";
-    assert.equal(existingEmail, expectedOutput);
+    assert.equal(user, testUsers["userRandomID"]);
   });
+  it('Should return undefined if passed in user not in database', function() {
+    const user = getUserByEmail("nonuser@example.com", testUsers)
+    assert.equal(user, false);
+  })
 });
-
-describe('generateRandomString', funciton() {
+//-----------------------
+describe('generateRandomString', function() {
   it('Should return a six character string', function() {
     const length = generateRandomString().length;
-    const expectedOutput = 6;
-    assert.equal(length, expectedOutput);
+    assert.equal(length, 6);
   });
   it('Should not return the same string when called more than once', function() {
     const first = generateRandomString();
@@ -37,50 +48,25 @@ describe('generateRandomString', funciton() {
     assert.notEqual(first, second);
   });
 });
-
-describe('emailDuplicate', funciton() {
-  it('Should return true if email is in database', function() {
-    const duplicateCheck = emailDuplicate("user2@example.com", testUsers);
-    const expectedOutput = true;
-    assert.equal(, expectedOutput);
-  });
-  it('Should return false if email is not in database', function() {
-    const duplicateCheck = emailDuplicate("user9@example.com", testUsers);
-    const expectedOutput = false;
-    assert.equal(,);
-  });
-});
-
-describe('urlBelongsToUser', funciton() {
+//-----------------------
+describe('urlBelongsToUser', function() {
   it('Should return true if the user created the short url and has access', function() {
-    
+    const urlBelongs = urlBelongsToUser("b6UTxQ", "aJ48lW", testUrlDatabase);
+    assert.equal(urlBelongs, true);
   });
   it('Should return false if the user did not create the short url', function() {
-
+    const urlBelongs = urlBelongsToUser("a1b2c3", "aJ48lW", testUrlDatabase);
+    assert.equal(urlBelongs, false);
   });
 });
-
-describe('urlExists', funciton() {
+//-----------------------
+describe('urlExists', function() {
   it('Should return True if the short url in the bar is in the database', function() {
-
+    const exists = urlExists("b6UTxQ", testUrlDatabase);
+    assert.equal(exists, true);
   });
   it('Should return False if the short url in the bar is not in the database', function() {
-
+    const exists = urlExists("3a1b2c", testUrlDatabase);
+    assert.equal(exists, false);
   });
 });
-
-//-------------------Generate random string
-//Should return a string with six characters
-//Should not return the same string when called multiple times
-//-------------------
-//Should return a user with a valid email
-//Should return undefined when no user exists for a given email address
-//-------------------
-//Should return true if email corresponds to a user in the database
-//Should return false if email does not correspond to a user in the database
-//-------------------
-//Should return an object of url information specific to the given user ID
-//Should return an empty object if no urls exist for a given user ID
-//-------------------
-//Should return true if a cookie corresponds to a user in the database
-//Should return false if a cookie does not correspond to a user in the database

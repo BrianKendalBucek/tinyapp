@@ -61,11 +61,11 @@ describe('urlBelongsToUser', function() {
 });
 //-----------------------
 describe('urlExists', function() {
-  it('Should return True if the short url in the bar is in the database', function() {
+  it('Should return true if the short url in the bar is in the database', function() {
     const exists = urlExists("b6UTxQ", testUrlDatabase);
     assert.equal(exists, true);
   });
-  it('Should return False if the short url in the bar is not in the database', function() {
+  it('Should return false if the short url in the bar is not in the database', function() {
     const exists = urlExists("3a1b2c", testUrlDatabase);
     assert.equal(exists, false);
   });
